@@ -23,14 +23,15 @@ use amethyst::animation::{
     EndControl,
 };
 use amethyst::assets::{AssetStorage, Loader};
-use amethyst::core::cgmath::{Matrix4, Point3, Transform as CgTransform, Vector3};
+use amethyst::core::cgmath::{Matrix4, Ortho, Point3, Transform as CgTransform, Vector3};
 use amethyst::core::transform::{GlobalTransform, Transform, TransformBundle};
 use amethyst::ecs::prelude::Entity;
 use amethyst::input::{is_close_requested, is_key_down, InputBundle};
 use amethyst::prelude::*;
 use amethyst::renderer::{
-    Camera, ColorMask, DrawSprite, Event, MaterialTextureSet, Projection, ScreenDimensions,
-    SpriteRender, SpriteSheet, SpriteSheetHandle, SpriteSheetSet, VirtualKeyCode, ALPHA,
+    Camera, ColorMask, DepthMode, DrawSprite, Event, MaterialTextureSet, Projection,
+    ScreenDimensions, SpriteRender, SpriteSheet, SpriteSheetHandle, SpriteSheetSet, VirtualKeyCode,
+    ALPHA,
 };
 use amethyst::ui::UiBundle;
 
@@ -122,7 +123,10 @@ impl Example {
         // Create an entity per sprite.
         for i in 0..sprite_count {
             let mut sprite_transform = Transform::default();
-            sprite_transform.translation = Vector3::new(i as f32 * sprite_w, 0., 0.);
+            let z = i as f32 * 0.1 - 10.0;
+            sprite_transform.translation = Vector3::new(i as f32 * sprite_w / 2.0, 0., z);
+
+            info!("z: {:5.2}", z);
 
             // This combines multiple `Transform`ations.
             // You need to `use amethyst::core::cgmath::Transform`;
@@ -275,7 +279,7 @@ fn load_sprite_sheet(world: &mut World) -> (SpriteSheetHandle, u64, usize, f32, 
 
     // Store texture in the world's `MaterialTextureSet` resource (singleton hash map)
     // This is used by the `DrawSprite` pass to look up the texture from the `SpriteSheet`
-    let texture = png_loader::load("texture/bat.32x32.png", world);
+    let texture = png_loader::load("texture/bat_gradient.png", world);
     world
         .write_resource::<MaterialTextureSet>()
         .insert(sprite_sheet_index, texture);
@@ -318,13 +322,16 @@ fn initialise_camera(world: &mut World) -> Entity {
     };
     world
         .create_entity()
-        .with(Camera::from(Projection::orthographic(
-            0.0, width, height, 0.0,
-        )))
-        .with(GlobalTransform(Matrix4::from_translation(
+        .with(Camera::from(Projection::Orthographic(Ortho {
+            left: 0.0,
+            right: width,
+            top: height,
+            bottom: 0.0,
+            near: 0.1,
+            far: 2000.0,
+        }))).with(GlobalTransform(Matrix4::from_translation(
             Vector3::new(0.0, 0.0, 1.0).into(),
-        )))
-        .build()
+        ))).build()
 }
 
 fn main() -> amethyst::Result<()> {
@@ -348,7 +355,11 @@ fn main() -> amethyst::Result<()> {
                 .with_dep(&["animation_control_system", "sampler_interpolation_system"]),
         )?
         // RenderBundle gives us a window
-        .with_basic_renderer(path, DrawSprite::new().with_transparency(ColorMask::all(), ALPHA, None), true)?
+        .with_basic_renderer(
+            path,
+            DrawSprite::new()
+                .with_transparency(ColorMask::all(), ALPHA, Some(DepthMode::LessEqualWrite)),
+            true)?
         // UiBundle relies on this as some Ui objects take input
         .with_bundle(InputBundle::<String, String>::new())?
         // Draws textures
