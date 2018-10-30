@@ -1,5 +1,5 @@
 use amethyst_assets::Handle;
-use amethyst_renderer::{Material, Sprite, TextureOffset, Texture};
+use amethyst_renderer::{Material, Sprite, Texture, TextureOffset};
 use minterpolate::InterpolationPrimitive;
 use {AnimationSampling, ApplyData, BlendMethod};
 
@@ -112,12 +112,7 @@ impl AnimationSampling for Material {
     type Primitive = MaterialPrimitive;
     type Channel = MaterialChannel;
 
-    fn apply_sample(
-        &mut self,
-        channel: &Self::Channel,
-        data: &Self::Primitive,
-        _: &(),
-    ) {
+    fn apply_sample(&mut self, channel: &Self::Channel, data: &Self::Primitive, _: &()) {
         match (channel, data) {
             (MaterialChannel::AlbedoTexture, MaterialPrimitive::Texture(i)) => {
                 self.albedo = i.clone();
@@ -129,16 +124,16 @@ impl AnimationSampling for Material {
                 self.normal = i.clone();
             }
             (MaterialChannel::MetallicTexture, MaterialPrimitive::Texture(i)) => {
-                    self.metallic = i.clone();
+                self.metallic = i.clone();
             }
             (MaterialChannel::RoughnessTexture, MaterialPrimitive::Texture(i)) => {
-                    self.roughness = i.clone();
+                self.roughness = i.clone();
             }
             (MaterialChannel::AmbientOcclusionTexture, MaterialPrimitive::Texture(i)) => {
-                    self.ambient_occlusion = i.clone();
+                self.ambient_occlusion = i.clone();
             }
             (MaterialChannel::CaveatTexture, MaterialPrimitive::Texture(i)) => {
-                    self.caveat = i.clone();
+                self.caveat = i.clone();
             }
 
             (MaterialChannel::AlbedoOffset, MaterialPrimitive::Offset(u, v)) => {
@@ -167,34 +162,17 @@ impl AnimationSampling for Material {
         }
     }
 
-    fn current_sample(
-        &self,
-        channel: &Self::Channel,
-        _: &(),
-    ) -> Self::Primitive {
-
+    fn current_sample(&self, channel: &Self::Channel, _: &()) -> Self::Primitive {
         match *channel {
-            MaterialChannel::AlbedoTexture => {
-                MaterialPrimitive::Texture(self.albedo.clone())
-            }
-            MaterialChannel::EmissionTexture => {
-                MaterialPrimitive::Texture(self.emission.clone())
-            }
-            MaterialChannel::NormalTexture => {
-                MaterialPrimitive::Texture(self.normal.clone())
-            }
-            MaterialChannel::MetallicTexture => {
-                MaterialPrimitive::Texture(self.metallic.clone())
-            }
-            MaterialChannel::RoughnessTexture => {
-                MaterialPrimitive::Texture(self.roughness.clone())
-            }
+            MaterialChannel::AlbedoTexture => MaterialPrimitive::Texture(self.albedo.clone()),
+            MaterialChannel::EmissionTexture => MaterialPrimitive::Texture(self.emission.clone()),
+            MaterialChannel::NormalTexture => MaterialPrimitive::Texture(self.normal.clone()),
+            MaterialChannel::MetallicTexture => MaterialPrimitive::Texture(self.metallic.clone()),
+            MaterialChannel::RoughnessTexture => MaterialPrimitive::Texture(self.roughness.clone()),
             MaterialChannel::AmbientOcclusionTexture => {
                 MaterialPrimitive::Texture(self.ambient_occlusion.clone())
             }
-            MaterialChannel::CaveatTexture => {
-                MaterialPrimitive::Texture(self.caveat.clone())
-            }
+            MaterialChannel::CaveatTexture => MaterialPrimitive::Texture(self.caveat.clone()),
             MaterialChannel::AlbedoOffset => offset(&self.albedo_offset),
             MaterialChannel::EmissionOffset => offset(&self.emission_offset),
             MaterialChannel::NormalOffset => offset(&self.normal_offset),
