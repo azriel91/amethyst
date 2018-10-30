@@ -18,7 +18,11 @@ The format is based on [Keep a Changelog][kc], and this project adheres to
 
 ### Changed
 
+* `SpriteRenderPrimitive::SpriteSheet` now takes `Handle<SpriteSheet>` instead of a `u64` ID.
+
 ### Removed
+
+* `SpriteSheetSet` is removed as it is no longer needed.
 
 ### Fixed
 
