@@ -1,6 +1,8 @@
+use minterpolate::InterpolationPrimitive;
+
 use amethyst_assets::Handle;
 use amethyst_renderer::{Material, Sprite, Texture, TextureOffset};
-use minterpolate::InterpolationPrimitive;
+
 use {AnimationSampling, ApplyData, BlendMethod};
 
 /// Sampler primitive for Material animations
