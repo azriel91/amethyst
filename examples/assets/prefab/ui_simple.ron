@@ -26,6 +26,7 @@ Container(
                 tab_order: 0,
                 anchor: TopLeft,
                 mouse_reactive: true,
+                selectable: 0,
             ),
             button: (
                 text: "SimpleBtn",
@@ -47,6 +48,7 @@ Container(
                 tab_order: 1,
                 anchor: TopLeft,
                 mouse_reactive: true,
+                selectable: 1,
             ),
             button: (
                 text: "ButtonWithSound",
