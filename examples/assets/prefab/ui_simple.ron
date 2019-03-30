@@ -1,0 +1,66 @@
+#![enable(implicit_some)]
+Container(
+    transform: (
+        id: "background",
+        anchor: Middle,
+        stretch: XY( x_margin: 0., y_margin: 0., keep_aspect_ratio: false),
+        width: 20.,
+        height: 20.,
+    ),
+    background: (
+        image: Data(Rgba((0.1, 0.5, 0.8, 1.0), (channel: Srgb))),
+    ),
+    children: [
+        // Simple Button
+        Button(
+            transform: (
+                id: "simple_button",
+                // The alignment causes the centre of the button to be at the specified coordinates.
+                // This means for a button that is 128 by 64 units (width x height), we shift it by
+                // 64 to the right, and 32 down, to make its top left corner align with the top left
+                // corner of its parent.
+                x: 64.,
+                y: -32.,
+                width: 128.,
+                height: 64.,
+                tab_order: 0,
+                anchor: TopLeft,
+                mouse_reactive: true,
+            ),
+            button: (
+                text: "SimpleBtn",
+                font: File("font/square.ttf", Ttf, ()),
+                font_size: 20.,
+                normal_text_color: (0.0, 0.0, 0.0, 1.0),
+                normal_image: Data(Rgba((0.82, 0.83, 0.83, 1.0), (channel: Srgb))),
+            )
+        ),
+
+        // Complex Button
+        Button(
+            transform: (
+                id: "button_with_sound",
+                x: 128.,
+                y: -96., // 32 units is half this button's height, less 64 units for the simple button's height
+                width: 256.,
+                height: 64.,
+                tab_order: 1,
+                anchor: TopLeft,
+                mouse_reactive: true,
+            ),
+            button: (
+                text: "ButtonWithSound",
+                font: File("font/square.ttf", Ttf, ()),
+                font_size: 20.,
+                normal_text_color: (0.2, 0.2, 1.0, 1.0),
+                hover_text_color: (0.4, 0.4, 1.0, 1.0),
+                press_text_color: (0.6, 0.6, 1.0, 1.0),
+                normal_image: Data(Rgba((0., 1., 0., 1.), (channel: Srgb))),
+                hover_image: Data(Rgba((0.3, 1., 0.3, 1.), (channel: Srgb))),
+                press_image: Data(Rgba((0.15, 1., 0.15, 1.), (channel: Srgb))),
+                hover_sound: File("audio/boop.ogg", Ogg, ()),
+                press_sound: File("audio/confirm.ogg", Ogg, ()),
+            )
+        ),
+    ],
+)
