@@ -1,5 +1,5 @@
 //! Displays spheres with physically based materials.
-//!
+
 use amethyst::{
     animation::{
         get_animation_set, AnimationBundle, AnimationCommand, AnimationControlSet, AnimationSet,
@@ -7,7 +7,7 @@ use amethyst::{
     },
     assets::{
         AssetLoaderSystemData, AssetStorage, Completion, Handle, Loader, PrefabLoader,
-        PrefabLoaderSystem, ProgressCounter, RonFormat,
+        PrefabLoaderSystemDesc, ProgressCounter, RonFormat,
     },
     controls::{FlyControlBundle, FlyControlTag},
     core::{
@@ -16,7 +16,7 @@ use amethyst::{
             ReadExpect, ReadStorage, System, SystemData, World, Write, WriteStorage,
         },
         math::{Unit, UnitQuaternion, Vector3},
-        Time, Transform, TransformBundle,
+        SystemDesc, Time, Transform, TransformBundle,
     },
     error::Error,
     gltf::GltfSceneLoaderSystem,
@@ -600,7 +600,7 @@ fn main() -> amethyst::Result<()> {
         .with(AutoFovSystem::default(), "auto_fov", &[])
         .with_bundle(FpsCounterBundle::default())?
         .with(
-            PrefabLoaderSystem::<ScenePrefabData>::new(&mut world),
+            PrefabLoaderSystemDesc::<ScenePrefabData>::default().build(&mut world),
             "scene_loader",
             &[],
         )

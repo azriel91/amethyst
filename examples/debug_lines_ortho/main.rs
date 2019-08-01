@@ -3,9 +3,10 @@
 use amethyst::{
     core::{
         transform::{Transform, TransformBundle},
-        Time,
+        SystemDesc, Time,
     },
-    ecs::{Read, ReadExpect, System, World, WorldExt, Write},
+    derive::SystemDesc,
+    ecs::{Read, ReadExpect, System, SystemData, World, WorldExt, Write},
     prelude::*,
     renderer::{
         camera::Camera,
@@ -19,6 +20,7 @@ use amethyst::{
     window::ScreenDimensions,
 };
 
+#[derive(SystemDesc)]
 struct ExampleLinesSystem;
 
 impl ExampleLinesSystem {

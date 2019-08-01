@@ -1,8 +1,8 @@
 //! Demonstrates loading prefabs using the Amethyst engine.
 
 use amethyst::{
-    assets::{PrefabLoader, PrefabLoaderSystem, RonFormat},
-    core::TransformBundle,
+    assets::{PrefabLoader, PrefabLoaderSystemDesc, RonFormat},
+    core::{SystemDesc, TransformBundle},
     ecs::World,
     prelude::*,
     renderer::{
@@ -42,7 +42,7 @@ fn main() -> Result<(), Error> {
     let mut world = World::with_application_resources::<GameData<'_, '_>, _>(assets_dir)?;
 
     let game_data = GameDataBuilder::default()
-        .with(PrefabLoaderSystem::<MyPrefabData>::new(&mut world), "", &[])
+        .with(PrefabLoaderSystemDesc::<MyPrefabData>::default(), "", &[])
         .with_bundle(
             RenderingBundle::<DefaultBackend>::new()
                 .with_plugin(

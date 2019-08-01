@@ -6,11 +6,14 @@ use amethyst::{
         EndControl, VertexSkinningBundle,
     },
     assets::{
-        AssetPrefab, Completion, Handle, Prefab, PrefabData, PrefabLoader, PrefabLoaderSystem,
+        AssetPrefab, Completion, Handle, Prefab, PrefabData, PrefabLoader, PrefabLoaderSystemDesc,
         ProgressCounter, RonFormat,
     },
     controls::{ControlTagPrefab, FlyControlBundle},
-    core::transform::{Transform, TransformBundle},
+    core::{
+        transform::{Transform, TransformBundle},
+        SystemDesc,
+    },
     derive::PrefabData,
     ecs::{Entity, ReadStorage, World, Write, WriteStorage},
     input::{is_close_requested, is_key_down, StringBindings, VirtualKeyCode},
@@ -187,7 +190,7 @@ fn main() -> Result<(), amethyst::Error> {
     let game_data = GameDataBuilder::default()
         .with(AutoFovSystem::default(), "auto_fov", &[])
         .with(
-            PrefabLoaderSystem::<ScenePrefabData>::new(&mut world),
+            PrefabLoaderSystemDesc::<ScenePrefabData>::default().build(&mut world),
             "scene_loader",
             &[],
         )

@@ -1,6 +1,7 @@
 use amethyst::{
-    core::frame_limiter::FrameRateLimitStrategy,
-    ecs::{Join, System, World, WriteStorage},
+    core::{frame_limiter::FrameRateLimitStrategy, SystemDesc},
+    derive::SystemDesc,
+    ecs::{Join, System, SystemData, World, WriteStorage},
     network::*,
     prelude::*,
     shrev::ReaderId,
@@ -43,6 +44,7 @@ impl SimpleState for State1 {
 }
 
 /// A simple system that receives a ton of network events.
+#[derive(SystemDesc)]
 struct SpamReceiveSystem {
     pub reader: Option<ReaderId<NetEvent<()>>>,
 }

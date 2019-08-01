@@ -526,7 +526,8 @@ mod test {
 
     use amethyst::{
         assets::{Asset, AssetStorage, Handle, Loader, ProcessingState, Processor},
-        core::bundle::SystemBundle,
+        core::{bundle::SystemBundle, SystemDesc},
+        derive::SystemDesc,
         ecs::prelude::*,
         error::Error,
         prelude::*,
@@ -1032,20 +1033,13 @@ mod test {
         fn run(&mut self, _: Self::SystemData) {}
     }
 
-    #[derive(Debug)]
+    #[derive(Debug, SystemDesc)]
+    #[system_desc(insert(ApplicationResourceNonDefault))]
     struct SystemNonDefault;
     type SystemNonDefaultData<'s> = ReadExpect<'s, ApplicationResourceNonDefault>;
     impl<'s> System<'s> for SystemNonDefault {
         type SystemData = SystemNonDefaultData<'s>;
         fn run(&mut self, _: Self::SystemData) {}
-
-        fn setup(&mut self, world: &mut World) {
-            // Must be called when we override `.setup()`
-            SystemNonDefaultData::setup(world);
-
-            // Need to manually insert this when the resource is `!Default`
-            world.insert(ApplicationResourceNonDefault);
-        }
     }
 
     #[derive(Debug)]
@@ -1079,11 +1073,11 @@ mod test {
     impl<'a, 'b> SystemBundle<'a, 'b> for BundleOne {
         fn build(
             self,
-            _world: &mut World,
+            world: &mut World,
             builder: &mut DispatcherBuilder<'a, 'b>,
         ) -> Result<(), Error> {
             builder.add(SystemOne, "system_one", &["system_zero"]);
-            builder.add(SystemNonDefault, "system_non_default", &[]);
+            builder.add(SystemNonDefault.build(world), "system_non_default", &[]);
             Ok(())
         }
     }

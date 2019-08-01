@@ -6,7 +6,7 @@ mod pong;
 mod systems;
 
 use amethyst::{
-    audio::{AudioBundle, DjSystem},
+    audio::{AudioBundle, DjSystemDesc},
     core::{frame_limiter::FrameRateLimitStrategy, transform::TransformBundle},
     ecs::{Component, DenseVecStorage},
     input::{InputBundle, StringBindings},
@@ -81,7 +81,7 @@ fn main() -> amethyst::Result<()> {
         .with_bundle(PongBundle)?
         .with_bundle(AudioBundle::default())?
         .with(
-            DjSystem::new(&mut world, |music: &mut Music| music.music.next()),
+            DjSystemDesc::new(|music: &mut Music| music.music.next()),
             "dj_system",
             &[],
         )

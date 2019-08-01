@@ -1,6 +1,7 @@
 use amethyst::{
-    core::frame_limiter::FrameRateLimitStrategy,
-    ecs::{Component, Entities, Join, System, VecStorage, World, WriteStorage},
+    core::{frame_limiter::FrameRateLimitStrategy, SystemDesc},
+    derive::SystemDesc,
+    ecs::{Component, Entities, Join, System, SystemData, VecStorage, World, WriteStorage},
     network::*,
     prelude::*,
     shrev::ReaderId,
@@ -47,6 +48,7 @@ impl Component for SpamReader {
 }
 
 /// A simple system that receives a ton of network events.
+#[derive(SystemDesc)]
 struct SpamReceiveSystem {}
 
 impl SpamReceiveSystem {

@@ -7,8 +7,11 @@ use amethyst::{
         get_animation_set, AnimationBundle, AnimationCommand, AnimationControlSet, AnimationSet,
         AnimationSetPrefab, EndControl,
     },
-    assets::{PrefabData, PrefabLoader, PrefabLoaderSystem, ProgressCounter, RonFormat},
-    core::transform::{Transform, TransformBundle},
+    assets::{PrefabData, PrefabLoader, PrefabLoaderSystemDesc, ProgressCounter, RonFormat},
+    core::{
+        transform::{Transform, TransformBundle},
+        SystemDesc,
+    },
     derive::PrefabData,
     ecs::{prelude::Entity, Entities, Join, ReadStorage, WriteStorage},
     error::Error,
@@ -136,11 +139,11 @@ fn main() -> amethyst::Result<()> {
     let assets_dir = app_root.join("examples/assets/");
     let display_config_path = app_root.join("examples/sprite_animation/config/display.ron");
 
-    let mut world = World::with_application_resources::<GameData<'_, '_>, _>(assets_dir)?;
+    let world = World::with_application_resources::<GameData<'_, '_>, _>(assets_dir)?;
 
     let game_data = GameDataBuilder::default()
         .with(
-            PrefabLoaderSystem::<MyPrefabData>::new(&mut world),
+            PrefabLoaderSystemDesc::<MyPrefabData>::default(),
             "scene_loader",
             &[],
         )

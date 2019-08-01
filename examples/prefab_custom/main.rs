@@ -4,10 +4,10 @@ use std::fmt::Debug;
 
 use amethyst::{
     assets::{
-        AssetStorage, Handle, Prefab, PrefabData, PrefabLoader, PrefabLoaderSystem,
+        AssetStorage, Handle, Prefab, PrefabData, PrefabLoader, PrefabLoaderSystemDesc,
         ProgressCounter, RonFormat,
     },
-    core::{Named, Parent},
+    core::{Named, Parent, SystemDesc},
     derive::PrefabData,
     ecs::{
         storage::{DenseVecStorage, VecStorage},
@@ -188,7 +188,7 @@ fn main() -> Result<(), Error> {
     let mut world = World::with_application_resources::<GameData<'_, '_>, _>(assets_dir)?;
 
     let game_data = GameDataBuilder::default().with(
-        PrefabLoaderSystem::<CustomPrefabData>::new(&mut world),
+        PrefabLoaderSystemDesc::<CustomPrefabData>::default().build(&mut world),
         "",
         &[],
     );

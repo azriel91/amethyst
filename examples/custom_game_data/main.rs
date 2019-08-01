@@ -6,9 +6,10 @@ use crate::{
 };
 use amethyst::{
     assets::{
-        Completion, Handle, Prefab, PrefabLoader, PrefabLoaderSystem, ProgressCounter, RonFormat,
+        Completion, Handle, Prefab, PrefabLoader, PrefabLoaderSystemDesc, ProgressCounter,
+        RonFormat,
     },
-    core::transform::TransformBundle,
+    core::{transform::TransformBundle, SystemDesc},
     ecs::{
         prelude::{Component, Entity, World},
         NullStorage, WorldExt,
@@ -205,7 +206,7 @@ fn main() -> Result<(), Error> {
     let mut world = World::with_application_resources::<CustomGameData<'_, '_>, _>(assets_dir)?;
 
     let game_data = CustomGameDataBuilder::default()
-        .with_base(PrefabLoaderSystem::<MyPrefabData>::new(&mut world), "", &[])
+        .with_base(PrefabLoaderSystemDesc::<MyPrefabData>::default(), "", &[])
         .with_running::<ExampleSystem>(ExampleSystem::default(), "example_system", &[])
         .with_base_bundle(
             &mut world,

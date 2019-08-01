@@ -1,8 +1,8 @@
 //! Displays a shaded sphere to the user.
 
 use amethyst::{
-    assets::{PrefabLoader, PrefabLoaderSystem, RonFormat},
-    core::transform::TransformBundle,
+    assets::{PrefabLoader, PrefabLoaderSystemDesc, RonFormat},
+    core::{transform::TransformBundle, SystemDesc},
     ecs::prelude::{World, WorldExt},
     prelude::*,
     renderer::{
@@ -37,7 +37,7 @@ fn main() -> amethyst::Result<()> {
 
     let mut world = World::with_application_resources::<GameData<'_, '_>, _>(assets_dir)?;
     let game_data = GameDataBuilder::default()
-        .with(PrefabLoaderSystem::<MyPrefabData>::new(&mut world), "", &[])
+        .with(PrefabLoaderSystemDesc::<MyPrefabData>::default(), "", &[])
         .with_bundle(
             RenderingBundle::<DefaultBackend>::new()
                 .with_plugin(
